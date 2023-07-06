@@ -1,6 +1,6 @@
 window.addEventListener('load', function () {
   const request = axios.create({
-    baseURL: 'http://midjourney-api.ai-des.com/func2api',
+    baseURL: 'https://midjourney-api.ai-des.com/func2api',
   })
 
   // 图片id
@@ -57,7 +57,12 @@ window.addEventListener('load', function () {
     } else if (data.prompt.trim() === '' && data.type === 'U') {
       data.prompt = `提取${new Date().getMilliseconds()}`
     }
-    const { data: res } = await request.post('/Describe', data)
+    const { data: res } = await request.post('/Describe', data, {
+      headers: {
+        "Content-Type": "application/json",
+        "UUID": "afd22831-6e9e-c4e4-2477-825a3328a178"
+      },
+    })
     if (res.code !== 200) return showTip('试试换个提示词吧')
     const wait = document.querySelector('.wait')
     const submit = document.querySelector('.submit')
@@ -103,8 +108,8 @@ window.addEventListener('load', function () {
     id = res.data.imgId
     const image = document.querySelector('.image')
     const download = document.querySelector('.download-a')
-    image.src = `http://midjourney-api.ai-des.com${res.data.url}`
-    download.href = `http://midjourney-api.ai-des.com${res.data.url}`
+    image.src = `https://midjourney-api.ai-des.com${res.data.url}`
+    download.href = `https://midjourney-api.ai-des.com${res.data.url}`
   }
 
   // 展示提示
@@ -118,14 +123,21 @@ window.addEventListener('load', function () {
   }
 
   // 淡出动画
-  function fadeOut(element) {
-    element.classList.remove('hide')
-    element.classList.add('show')
+  function fadeOut(ele) {
+    ele.classList.add('fade-out')
+    setTimeout(() => {
+      ele.classList.remove('fade-out')
+      ele.style.opacity = 1
+    }, 500)
   }
 
   // 淡入动画
-  function fadeIn(element) {
-    element.classList.remove('show')
-    element.classList.add('hide')
+  function fadeIn(ele) {
+    ele.style.opacity = 0
+    ele.classList.add('fade-in')
+    setTimeout(() => {
+      ele.classList.remove('fade-in')
+      ele.style.opacity = 0
+    }, 500)
   }
 })
