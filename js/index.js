@@ -1,6 +1,6 @@
 window.addEventListener('load', function () {
   const request = axios.create({
-    baseURL: 'http://www.zhangb.top:8181',
+    baseURL: 'http://midjourney-api.ai-des.com/func2api',
   })
 
   // 图片id
@@ -57,7 +57,7 @@ window.addEventListener('load', function () {
     } else if (data.prompt.trim() === '' && data.type === 'U') {
       data.prompt = `提取${new Date().getMilliseconds()}`
     }
-    const { data: res } = await request.post('/ai_draw/make', data)
+    const { data: res } = await request.post('/Describe', data)
     if (res.code !== 200) return showTip('试试换个提示词吧')
     const wait = document.querySelector('.wait')
     const submit = document.querySelector('.submit')
@@ -99,7 +99,7 @@ window.addEventListener('load', function () {
 
   // 获取图片
   async function getImg(imgId) {
-    const { data: res } = await request.post('/ai_draw/get', imgId)
+    const { data: res } = await request.post('/Describe', imgId)
     id = res.data.imgId
     const image = document.querySelector('.image')
     const download = document.querySelector('.download-a')
